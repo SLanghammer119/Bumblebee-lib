@@ -47,7 +47,7 @@ public class Orderitems implements Serializable {
     private BigDecimal totalline;
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
     @ManyToOne(optional = false)
-    private Articles articlesArtid;
+    private Article articlesArtid;
     @JoinColumn(name = "orders_orderid", referencedColumnName = "orderid")
     @ManyToOne(optional = false)
     private Orders ordersOrderid;
@@ -83,11 +83,11 @@ public class Orderitems implements Serializable {
         this.totalline = totalline;
     }
 
-    public Articles getArticlesArtid() {
+    public Article getArticlesArtid() {
         return articlesArtid;
     }
 
-    public void setArticlesArtid(Articles articlesArtid) {
+    public void setArticlesArtid(Article articlesArtid) {
         this.articlesArtid = articlesArtid;
     }
 

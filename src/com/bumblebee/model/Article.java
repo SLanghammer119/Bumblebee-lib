@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "articles")
@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Articles.findByArticleno", query = "SELECT a FROM Articles a WHERE a.articleno = :articleno")
     , @NamedQuery(name = "Articles.findByName", query = "SELECT a FROM Articles a WHERE a.name = :name")
     , @NamedQuery(name = "Articles.findByPrice", query = "SELECT a FROM Articles a WHERE a.price = :price")})
-public class Articles implements Serializable {
+public class Article implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -75,10 +75,10 @@ public class Articles implements Serializable {
     @ManyToOne(optional = false)
     private Subcategories subcategoriesSubid;
 
-    public Articles() {
+    public Article() {
     }
 
-    public Articles(Integer artid) {
+    public Article(Integer artid) {
         this.artid = artid;
     }
 

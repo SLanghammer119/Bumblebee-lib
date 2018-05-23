@@ -5,6 +5,7 @@
  */
 package com.bumblebee.ctrl;
 
+import com.bumblebee.model.Customer;
 import javax.ejb.Remote;
 
 /**
@@ -13,6 +14,8 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface DataBeanRemote {
+    
+    public Customer getCustomer(String email);
     
     
 }

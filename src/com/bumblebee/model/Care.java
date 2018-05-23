@@ -49,7 +49,7 @@ public class Care implements Serializable {
     @Column(name = "carephoto")
     private byte[] carephoto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "careCareid")
-    private Collection<Articles> articlesCollection;
+    private Collection<Article> articlesCollection;
 
     public Care() {
     }
@@ -89,11 +89,11 @@ public class Care implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Articles> getArticlesCollection() {
+    public Collection<Article> getArticlesCollection() {
         return articlesCollection;
     }
 
-    public void setArticlesCollection(Collection<Articles> articlesCollection) {
+    public void setArticlesCollection(Collection<Article> articlesCollection) {
         this.articlesCollection = articlesCollection;
     }
 

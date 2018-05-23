@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Units.findAll", query = "SELECT u FROM Units u")
     , @NamedQuery(name = "Units.findByUnitid", query = "SELECT u FROM Units u WHERE u.unitid = :unitid")
     , @NamedQuery(name = "Units.findByUnit", query = "SELECT u FROM Units u WHERE u.unit = :unit")})
-public class Units implements Serializable {
+public class Unit implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,10 +45,10 @@ public class Units implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "unitsUnitid")
     private Collection<Articlesizes> articlesizesCollection;
 
-    public Units() {
+    public Unit() {
     }
 
-    public Units(Integer unitid) {
+    public Unit(Integer unitid) {
         this.unitid = unitid;
     }
 

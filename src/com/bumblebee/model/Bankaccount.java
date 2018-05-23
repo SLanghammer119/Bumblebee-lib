@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Bankaccounts.findByIban", query = "SELECT b FROM Bankaccounts b WHERE b.iban = :iban")
     , @NamedQuery(name = "Bankaccounts.findByBic", query = "SELECT b FROM Bankaccounts b WHERE b.bic = :bic")
     , @NamedQuery(name = "Bankaccounts.findByBankname", query = "SELECT b FROM Bankaccounts b WHERE b.bankname = :bankname")})
-public class Bankaccounts implements Serializable {
+public class Bankaccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,14 +58,14 @@ public class Bankaccounts implements Serializable {
     @ManyToOne(optional = false)
     private Customer customersCustid;
 
-    public Bankaccounts() {
+    public Bankaccount() {
     }
 
-    public Bankaccounts(Integer bankid) {
+    public Bankaccount(Integer bankid) {
         this.bankid = bankid;
     }
 
-    public Bankaccounts(Integer bankid, String lastname, String iban) {
+    public Bankaccount(Integer bankid, String lastname, String iban) {
         this.bankid = bankid;
         this.lastname = lastname;
         this.iban = iban;

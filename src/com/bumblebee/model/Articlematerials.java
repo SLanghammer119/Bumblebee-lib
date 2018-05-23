@@ -39,7 +39,7 @@ public class Articlematerials implements Serializable {
     private Integer artmatid;
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
     @ManyToOne(optional = false)
-    private Articles articlesArtid;
+    private Article articlesArtid;
     @JoinColumn(name = "materials_matid", referencedColumnName = "matid")
     @ManyToOne(optional = false)
     private Materials materialsMatid;
@@ -59,11 +59,11 @@ public class Articlematerials implements Serializable {
         this.artmatid = artmatid;
     }
 
-    public Articles getArticlesArtid() {
+    public Article getArticlesArtid() {
         return articlesArtid;
     }
 
-    public void setArticlesArtid(Articles articlesArtid) {
+    public void setArticlesArtid(Article articlesArtid) {
         this.articlesArtid = articlesArtid;
     }
 

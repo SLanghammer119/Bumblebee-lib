@@ -7,6 +7,7 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,32 +18,33 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "customers")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Customers.findAll", query = "SELECT c FROM Customers c")
-    , @NamedQuery(name = "Customers.findByCustid", query = "SELECT c FROM Customers c WHERE c.custid = :custid")
-    , @NamedQuery(name = "Customers.findByCustomerno", query = "SELECT c FROM Customers c WHERE c.customerno = :customerno")
-    , @NamedQuery(name = "Customers.findByFirstname", query = "SELECT c FROM Customers c WHERE c.firstname = :firstname")
-    , @NamedQuery(name = "Customers.findByLastname", query = "SELECT c FROM Customers c WHERE c.lastname = :lastname")
-    , @NamedQuery(name = "Customers.findByStreet", query = "SELECT c FROM Customers c WHERE c.street = :street")
-    , @NamedQuery(name = "Customers.findByHouseno", query = "SELECT c FROM Customers c WHERE c.houseno = :houseno")
-    , @NamedQuery(name = "Customers.findByPostcode", query = "SELECT c FROM Customers c WHERE c.postcode = :postcode")
-    , @NamedQuery(name = "Customers.findByTown", query = "SELECT c FROM Customers c WHERE c.town = :town")
-    , @NamedQuery(name = "Customers.findByCountry", query = "SELECT c FROM Customers c WHERE c.country = :country")
-    , @NamedQuery(name = "Customers.findByPhone", query = "SELECT c FROM Customers c WHERE c.phone = :phone")
-    , @NamedQuery(name = "Customers.findByEmail", query = "SELECT c FROM Customers c WHERE c.email = :email")
-    , @NamedQuery(name = "Customers.findByPassword", query = "SELECT c FROM Customers c WHERE c.password = :password")
-    , @NamedQuery(name = "Customers.findByCategory", query = "SELECT c FROM Customers c WHERE c.category = :category")})
+    @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
+    , @NamedQuery(name = "Customer.findByCustid", query = "SELECT c FROM Customer c WHERE c.custid = :custid")
+    , @NamedQuery(name = "Customer.findByCustomerno", query = "SELECT c FROM Customer c WHERE c.customerno = :customerno")
+    , @NamedQuery(name = "Customer.findByFirstname", query = "SELECT c FROM Customer c WHERE c.firstname = :firstname")
+    , @NamedQuery(name = "Customer.findByLastname", query = "SELECT c FROM Customer c WHERE c.lastname = :lastname")
+    , @NamedQuery(name = "Customer.findByStreet", query = "SELECT c FROM Customer c WHERE c.street = :street")
+    , @NamedQuery(name = "Customer.findByHouseno", query = "SELECT c FROM Customer c WHERE c.houseno = :houseno")
+    , @NamedQuery(name = "Customer.findByPostcode", query = "SELECT c FROM Customer c WHERE c.postcode = :postcode")
+    , @NamedQuery(name = "Customer.findByTown", query = "SELECT c FROM Customer c WHERE c.town = :town")
+    , @NamedQuery(name = "Customer.findByCountry", query = "SELECT c FROM Customer c WHERE c.country = :country")
+    , @NamedQuery(name = "Customer.findByPhone", query = "SELECT c FROM Customer c WHERE c.phone = :phone")
+    , @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email")
+    , @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")
+    , @NamedQuery(name = "Customer.findByCategory", query = "SELECT c FROM Customer c WHERE c.category = :category")})
+
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,16 +86,16 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "category")
     private String category;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+    private Shoppingcart shoppingcart;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private Collection<Shoppingcarts> shoppingcartsCollection;
+    private List<Deliveryadresses> deliveryadresses;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+    private Bankaccount bankaccount;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+    private Creditcard creditcard;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private Collection<Deliveryadresses> deliveryadressesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private Collection<Bankaccounts> bankaccountsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private Collection<Creditcards> creditcardsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private Collection<Orders> ordersCollection;
+    private List<Orders> orders;
 
     public Customer() {
     }
@@ -219,49 +221,49 @@ public class Customer implements Serializable {
         this.category = category;
     }
 
-    @XmlTransient
-    public Collection<Shoppingcarts> getShoppingcartsCollection() {
-        return shoppingcartsCollection;
-    }
-
-    public void setShoppingcartsCollection(Collection<Shoppingcarts> shoppingcartsCollection) {
-        this.shoppingcartsCollection = shoppingcartsCollection;
-    }
-
-    @XmlTransient
-    public Collection<Deliveryadresses> getDeliveryadressesCollection() {
-        return deliveryadressesCollection;
-    }
-
-    public void setDeliveryadressesCollection(Collection<Deliveryadresses> deliveryadressesCollection) {
-        this.deliveryadressesCollection = deliveryadressesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Bankaccounts> getBankaccountsCollection() {
-        return bankaccountsCollection;
-    }
-
-    public void setBankaccountsCollection(Collection<Bankaccounts> bankaccountsCollection) {
-        this.bankaccountsCollection = bankaccountsCollection;
-    }
-
-    @XmlTransient
-    public Collection<Creditcards> getCreditcardsCollection() {
-        return creditcardsCollection;
-    }
-
-    public void setCreditcardsCollection(Collection<Creditcards> creditcardsCollection) {
-        this.creditcardsCollection = creditcardsCollection;
-    }
-
-    @XmlTransient
-    public Collection<Orders> getOrdersCollection() {
-        return ordersCollection;
-    }
-
-    public void setOrdersCollection(Collection<Orders> ordersCollection) {
-        this.ordersCollection = ordersCollection;
-    }
-    
+//    @XmlTransient
+//    public Collection<Shoppingcarts> getShoppingcartsCollection() {
+//        return shoppingcartsCollection;
+//    }
+//
+//    public void setShoppingcartsCollection(Collection<Shoppingcarts> shoppingcartsCollection) {
+//        this.shoppingcartsCollection = shoppingcartsCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<Deliveryadresses> getDeliveryadressesCollection() {
+//        return deliveryadressesCollection;
+//    }
+//
+//    public void setDeliveryadressesCollection(Collection<Deliveryadresses> deliveryadressesCollection) {
+//        this.deliveryadressesCollection = deliveryadressesCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<Bankaccounts> getBankaccountsCollection() {
+//        return bankaccountsCollection;
+//    }
+//
+//    public void setBankaccountsCollection(Collection<Bankaccounts> bankaccountsCollection) {
+//        this.bankaccountsCollection = bankaccountsCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<Creditcards> getCreditcardsCollection() {
+//        return creditcardsCollection;
+//    }
+//
+//    public void setCreditcardsCollection(Collection<Creditcards> creditcardsCollection) {
+//        this.creditcardsCollection = creditcardsCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<Orders> getOrdersCollection() {
+//        return ordersCollection;
+//    }
+//
+//    public void setOrdersCollection(Collection<Orders> ordersCollection) {
+//        this.ordersCollection = ordersCollection;
+//    }
+//    
 }

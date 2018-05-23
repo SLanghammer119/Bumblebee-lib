@@ -49,7 +49,7 @@ public class Subcategories implements Serializable {
     @ManyToOne(optional = false)
     private Primecategories primecategoriesPrimeid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subcategoriesSubid")
-    private Collection<Articles> articlesCollection;
+    private Collection<Article> articlesCollection;
 
     public Subcategories() {
     }
@@ -88,11 +88,11 @@ public class Subcategories implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Articles> getArticlesCollection() {
+    public Collection<Article> getArticlesCollection() {
         return articlesCollection;
     }
 
-    public void setArticlesCollection(Collection<Articles> articlesCollection) {
+    public void setArticlesCollection(Collection<Article> articlesCollection) {
         this.articlesCollection = articlesCollection;
     }
     

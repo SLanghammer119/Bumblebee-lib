@@ -47,10 +47,10 @@ public class Shoppingitems implements Serializable {
     private BigDecimal totalLine;
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
     @ManyToOne(optional = false)
-    private Articles articlesArtid;
+    private Article articlesArtid;
     @JoinColumn(name = "shoppingcarts_shopid", referencedColumnName = "shopid")
     @ManyToOne(optional = false)
-    private Shoppingcarts shoppingcartsShopid;
+    private Shoppingcart shoppingcartsShopid;
 
     public Shoppingitems() {
     }
@@ -83,19 +83,19 @@ public class Shoppingitems implements Serializable {
         this.totalLine = totalLine;
     }
 
-    public Articles getArticlesArtid() {
+    public Article getArticlesArtid() {
         return articlesArtid;
     }
 
-    public void setArticlesArtid(Articles articlesArtid) {
+    public void setArticlesArtid(Article articlesArtid) {
         this.articlesArtid = articlesArtid;
     }
 
-    public Shoppingcarts getShoppingcartsShopid() {
+    public Shoppingcart getShoppingcartsShopid() {
         return shoppingcartsShopid;
     }
 
-    public void setShoppingcartsShopid(Shoppingcarts shoppingcartsShopid) {
+    public void setShoppingcartsShopid(Shoppingcart shoppingcartsShopid) {
         this.shoppingcartsShopid = shoppingcartsShopid;
     }
 

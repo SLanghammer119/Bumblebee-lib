@@ -39,10 +39,10 @@ public class Articlesizes implements Serializable {
     private Integer artsizid;
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
     @ManyToOne(optional = false)
-    private Articles articlesArtid;
+    private Article articlesArtid;
     @JoinColumn(name = "units_unitid", referencedColumnName = "unitid")
     @ManyToOne(optional = false)
-    private Units unitsUnitid;
+    private Unit unitsUnitid;
 
     public Articlesizes() {
     }
@@ -59,19 +59,19 @@ public class Articlesizes implements Serializable {
         this.artsizid = artsizid;
     }
 
-    public Articles getArticlesArtid() {
+    public Article getArticlesArtid() {
         return articlesArtid;
     }
 
-    public void setArticlesArtid(Articles articlesArtid) {
+    public void setArticlesArtid(Article articlesArtid) {
         this.articlesArtid = articlesArtid;
     }
 
-    public Units getUnitsUnitid() {
+    public Unit getUnitsUnitid() {
         return unitsUnitid;
     }
 
-    public void setUnitsUnitid(Units unitsUnitid) {
+    public void setUnitsUnitid(Unit unitsUnitid) {
         this.unitsUnitid = unitsUnitid;
     }
 

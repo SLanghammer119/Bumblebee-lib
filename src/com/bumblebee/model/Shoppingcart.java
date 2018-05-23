@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Shoppingcarts.findByShopcardno", query = "SELECT s FROM Shoppingcarts s WHERE s.shopcardno = :shopcardno")
     , @NamedQuery(name = "Shoppingcarts.findByTotal", query = "SELECT s FROM Shoppingcarts s WHERE s.total = :total")
     , @NamedQuery(name = "Shoppingcarts.findByShipping", query = "SELECT s FROM Shoppingcarts s WHERE s.shipping = :shipping")})
-public class Shoppingcarts implements Serializable {
+public class Shoppingcart implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,14 +59,14 @@ public class Shoppingcarts implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shoppingcartsShopid")
     private Collection<Shoppingitems> shoppingitemsCollection;
 
-    public Shoppingcarts() {
+    public Shoppingcart() {
     }
 
-    public Shoppingcarts(Integer shopid) {
+    public Shoppingcart(Integer shopid) {
         this.shopid = shopid;
     }
 
-    public Shoppingcarts(Integer shopid, int shopcardno) {
+    public Shoppingcart(Integer shopid, int shopcardno) {
         this.shopid = shopid;
         this.shopcardno = shopcardno;
     }

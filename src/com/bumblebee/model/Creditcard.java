@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Creditcards.findByCardno", query = "SELECT c FROM Creditcards c WHERE c.cardno = :cardno")
     , @NamedQuery(name = "Creditcards.findByValidity", query = "SELECT c FROM Creditcards c WHERE c.validity = :validity")
     , @NamedQuery(name = "Creditcards.findByControllno", query = "SELECT c FROM Creditcards c WHERE c.controllno = :controllno")})
-public class Creditcards implements Serializable {
+public class Creditcard implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -64,14 +64,14 @@ public class Creditcards implements Serializable {
     @ManyToOne(optional = false)
     private Customer customersCustid;
 
-    public Creditcards() {
+    public Creditcard() {
     }
 
-    public Creditcards(Integer credid) {
+    public Creditcard(Integer credid) {
         this.credid = credid;
     }
 
-    public Creditcards(Integer credid, int type, String lastname, String cardno, String validity, String controllno) {
+    public Creditcard(Integer credid, int type, String lastname, String cardno, String validity, String controllno) {
         this.credid = credid;
         this.type = type;
         this.lastname = lastname;
