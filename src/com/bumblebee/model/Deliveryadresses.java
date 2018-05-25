@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "deliveryadresses")
@@ -63,9 +61,7 @@ public class Deliveryadresses implements Serializable {
     private String town;
     @Column(name = "country")
     private String country;
-    @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
-    @ManyToOne(optional = false)
-    private Customer customersCustid;
+    
 
     public Deliveryadresses() {
     }
@@ -147,12 +143,12 @@ public class Deliveryadresses implements Serializable {
         this.country = country;
     }
 
-    public Customer getCustomersCustid() {
-        return customersCustid;
-    }
-
-    public void setCustomersCustid(Customer customersCustid) {
-        this.customersCustid = customersCustid;
-    }
+//    public Integer getCustomersCustid() {
+//        return customersCustid;
+//    }
+//
+//    public void setCustomersCustid(Integer customersCustid) {
+//        this.customersCustid = customersCustid;
+//    }
     
 }

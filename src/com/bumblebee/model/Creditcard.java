@@ -7,8 +7,10 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,25 +18,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "creditcards")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Creditcards.findAll", query = "SELECT c FROM Creditcards c")
-    , @NamedQuery(name = "Creditcards.findByCredid", query = "SELECT c FROM Creditcards c WHERE c.credid = :credid")
-    , @NamedQuery(name = "Creditcards.findByType", query = "SELECT c FROM Creditcards c WHERE c.type = :type")
-    , @NamedQuery(name = "Creditcards.findByFirstname", query = "SELECT c FROM Creditcards c WHERE c.firstname = :firstname")
-    , @NamedQuery(name = "Creditcards.findByLastname", query = "SELECT c FROM Creditcards c WHERE c.lastname = :lastname")
-    , @NamedQuery(name = "Creditcards.findByCardno", query = "SELECT c FROM Creditcards c WHERE c.cardno = :cardno")
-    , @NamedQuery(name = "Creditcards.findByValidity", query = "SELECT c FROM Creditcards c WHERE c.validity = :validity")
-    , @NamedQuery(name = "Creditcards.findByControllno", query = "SELECT c FROM Creditcards c WHERE c.controllno = :controllno")})
+    @NamedQuery(name = "Creditcard.findAll", query = "SELECT c FROM Creditcard c")
+    , @NamedQuery(name = "Creditcard.findByCredid", query = "SELECT c FROM Creditcard c WHERE c.credid = :credid")
+    , @NamedQuery(name = "Creditcard.findByType", query = "SELECT c FROM Creditcard c WHERE c.type = :type")
+    , @NamedQuery(name = "Creditcard.findByFirstname", query = "SELECT c FROM Creditcard c WHERE c.firstname = :firstname")
+    , @NamedQuery(name = "Creditcard.findByLastname", query = "SELECT c FROM Creditcard c WHERE c.lastname = :lastname")
+    , @NamedQuery(name = "Creditcard.findByCardno", query = "SELECT c FROM Creditcard c WHERE c.cardno = :cardno")
+    , @NamedQuery(name = "Creditcard.findByValidity", query = "SELECT c FROM Creditcard c WHERE c.validity = :validity")
+    , @NamedQuery(name = "Creditcard.findByControllno", query = "SELECT c FROM Creditcard c WHERE c.controllno = :controllno")})
 public class Creditcard implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,10 +63,12 @@ public class Creditcard implements Serializable {
     @Basic(optional = false)
     @Column(name = "controllno")
     private String controllno;
-    @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
-    @ManyToOne(optional = false)
-    private Customer customersCustid;
-
+    
+    
+    @OneToOne(targetEntity=Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="customers_custid", referencedColumnName="custid")
+    private Customer customer;
+    
     public Creditcard() {
     }
 
@@ -136,12 +141,6 @@ public class Creditcard implements Serializable {
         this.controllno = controllno;
     }
 
-    public Customer getCustomersCustid() {
-        return customersCustid;
-    }
-
-    public void setCustomersCustid(Customer customersCustid) {
-        this.customersCustid = customersCustid;
-    }
+  
 
 }

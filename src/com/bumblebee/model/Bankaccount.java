@@ -7,33 +7,35 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "bankaccounts")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Bankaccounts.findAll", query = "SELECT b FROM Bankaccounts b")
-    , @NamedQuery(name = "Bankaccounts.findByBankid", query = "SELECT b FROM Bankaccounts b WHERE b.bankid = :bankid")
-    , @NamedQuery(name = "Bankaccounts.findByFirstname", query = "SELECT b FROM Bankaccounts b WHERE b.firstname = :firstname")
-    , @NamedQuery(name = "Bankaccounts.findByLastname", query = "SELECT b FROM Bankaccounts b WHERE b.lastname = :lastname")
-    , @NamedQuery(name = "Bankaccounts.findByIban", query = "SELECT b FROM Bankaccounts b WHERE b.iban = :iban")
-    , @NamedQuery(name = "Bankaccounts.findByBic", query = "SELECT b FROM Bankaccounts b WHERE b.bic = :bic")
-    , @NamedQuery(name = "Bankaccounts.findByBankname", query = "SELECT b FROM Bankaccounts b WHERE b.bankname = :bankname")})
+    @NamedQuery(name = "Bankaccount.findAll", query = "SELECT b FROM Bankaccount b")
+    , @NamedQuery(name = "Bankaccount.findByBankid", query = "SELECT b FROM Bankaccount b WHERE b.bankid = :bankid")
+    , @NamedQuery(name = "Bankaccount.findByFirstname", query = "SELECT b FROM Bankaccount b WHERE b.firstname = :firstname")
+    , @NamedQuery(name = "Bankaccount.findByLastname", query = "SELECT b FROM Bankaccount b WHERE b.lastname = :lastname")
+    , @NamedQuery(name = "Bankaccount.findByIban", query = "SELECT b FROM Bankaccount b WHERE b.iban = :iban")
+    , @NamedQuery(name = "Bankaccount.findByBic", query = "SELECT b FROM Bankaccount b WHERE b.bic = :bic")
+    , @NamedQuery(name = "Bankaccount.findByBankname", query = "SELECT b FROM Bankaccount b WHERE b.bankname = :bankname")})
 public class Bankaccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,9 +56,11 @@ public class Bankaccount implements Serializable {
     private String bic;
     @Column(name = "bankname")
     private String bankname;
-    @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
-    @ManyToOne(optional = false)
-    private Customer customersCustid;
+
+    
+    @OneToOne(targetEntity=Customer.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="customers_custid", referencedColumnName="custid")
+    private Customer customer;
 
     public Bankaccount() {
     }
@@ -119,14 +123,14 @@ public class Bankaccount implements Serializable {
         this.bankname = bankname;
     }
 
-    public Customer getCustomersCustid() {
-        return customersCustid;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomersCustid(Customer customersCustid) {
-        this.customersCustid = customersCustid;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

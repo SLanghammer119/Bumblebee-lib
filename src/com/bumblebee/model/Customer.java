@@ -12,9 +12,11 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -86,16 +88,27 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "category")
     private String category;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private Shoppingcart shoppingcart;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+    
+    @OneToMany(targetEntity=Deliveryadresses.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
     private List<Deliveryadresses> deliveryadresses;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+    
+    
+    @OneToOne(targetEntity=Bankaccount.class, mappedBy="customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Bankaccount bankaccount;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+    
+    
+    @OneToOne(targetEntity=Creditcard.class, mappedBy="customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Creditcard creditcard;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
-    private List<Orders> orders;
+    
+    
+    @OneToOne(targetEntity=Shoppingcart.class, mappedBy="customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Shoppingcart shoppingcart;
+    
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+//    private Creditcard creditcard;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customersCustid")
+//    private List<Orders> orders;
 
     public Customer() {
     }

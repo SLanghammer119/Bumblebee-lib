@@ -7,36 +7,36 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "shoppingcarts")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Shoppingcarts.findAll", query = "SELECT s FROM Shoppingcarts s")
-    , @NamedQuery(name = "Shoppingcarts.findByShopid", query = "SELECT s FROM Shoppingcarts s WHERE s.shopid = :shopid")
-    , @NamedQuery(name = "Shoppingcarts.findByShopcardno", query = "SELECT s FROM Shoppingcarts s WHERE s.shopcardno = :shopcardno")
-    , @NamedQuery(name = "Shoppingcarts.findByTotal", query = "SELECT s FROM Shoppingcarts s WHERE s.total = :total")
-    , @NamedQuery(name = "Shoppingcarts.findByShipping", query = "SELECT s FROM Shoppingcarts s WHERE s.shipping = :shipping")})
+    @NamedQuery(name = "Shoppingcart.findAll", query = "SELECT s FROM Shoppingcart s")
+    , @NamedQuery(name = "Shoppingcart.findByShopid", query = "SELECT s FROM Shoppingcart s WHERE s.shopid = :shopid")
+    , @NamedQuery(name = "Shoppingcart.findByShopcardno", query = "SELECT s FROM Shoppingcart s WHERE s.shopcardno = :shopcardno")
+    , @NamedQuery(name = "Shoppingcart.findByTotal", query = "SELECT s FROM Shoppingcart s WHERE s.total = :total")
+    , @NamedQuery(name = "Shoppingcart.findByShipping", query = "SELECT s FROM Shoppingcart s WHERE s.shipping = :shipping")})
 public class Shoppingcart implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,14 +50,18 @@ public class Shoppingcart implements Serializable {
     private int shopcardno;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "total")
-    private BigDecimal total;
+    private Double total;
     @Column(name = "shipping")
-    private BigDecimal shipping;
+    private Double shipping;
+    
+    @OneToOne(targetEntity=Customer.class, cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "customers_custid", referencedColumnName = "custid")
-    @ManyToOne(optional = false)
-    private Customer customersCustid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shoppingcartsShopid")
-    private Collection<Shoppingitems> shoppingitemsCollection;
+    private Customer customer;
+    
+    
+    @OneToMany(targetEntity=Shoppingitem.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="shoppingcarts_shopid", referencedColumnName="shopid")
+    private List<Shoppingitem> shoppingitems;
 
     public Shoppingcart() {
     }
@@ -87,37 +91,42 @@ public class Shoppingcart implements Serializable {
         this.shopcardno = shopcardno;
     }
 
-    public BigDecimal getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
-    public BigDecimal getShipping() {
+    public Double getShipping() {
         return shipping;
     }
 
-    public void setShipping(BigDecimal shipping) {
+    public void setShipping(Double shipping) {
         this.shipping = shipping;
     }
 
-    public Customer getCustomersCustid() {
-        return customersCustid;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomersCustid(Customer customersCustid) {
-        this.customersCustid = customersCustid;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    @XmlTransient
-    public Collection<Shoppingitems> getShoppingitemsCollection() {
-        return shoppingitemsCollection;
+    public List<Shoppingitem> getShoppingitems() {
+        return shoppingitems;
     }
 
-    public void setShoppingitemsCollection(Collection<Shoppingitems> shoppingitemsCollection) {
-        this.shoppingitemsCollection = shoppingitemsCollection;
+    public void setShoppingitems(List<Shoppingitem> shoppingitems) {
+        this.shoppingitems = shoppingitems;
     }
+    
+    
+
+   
+
+
     
 }

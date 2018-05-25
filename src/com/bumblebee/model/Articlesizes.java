@@ -7,8 +7,10 @@ package com.bumblebee.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Teilnehmer2
+ * @author Stefanie Langhammer
  */
 @Entity
 @Table(name = "articlesizes")
@@ -37,12 +39,16 @@ public class Articlesizes implements Serializable {
     @Basic(optional = false)
     @Column(name = "artsizid")
     private Integer artsizid;
+    
+    
+    @ManyToOne(targetEntity=Article.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "articles_artid", referencedColumnName = "artid")
-    @ManyToOne(optional = false)
-    private Article articlesArtid;
+    private Article article;
+    
+    
+    @ManyToOne(targetEntity=Unit.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "units_unitid", referencedColumnName = "unitid")
-    @ManyToOne(optional = false)
-    private Unit unitsUnitid;
+    private Unit unit;
 
     public Articlesizes() {
     }
@@ -59,21 +65,23 @@ public class Articlesizes implements Serializable {
         this.artsizid = artsizid;
     }
 
-    public Article getArticlesArtid() {
-        return articlesArtid;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticlesArtid(Article articlesArtid) {
-        this.articlesArtid = articlesArtid;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public Unit getUnitsUnitid() {
-        return unitsUnitid;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setUnitsUnitid(Unit unitsUnitid) {
-        this.unitsUnitid = unitsUnitid;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
+
+    
 
     
 }

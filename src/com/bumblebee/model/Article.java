@@ -8,10 +8,12 @@ package com.bumblebee.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +25,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,11 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "articles")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Articles.findAll", query = "SELECT a FROM Articles a")
-    , @NamedQuery(name = "Articles.findByArtid", query = "SELECT a FROM Articles a WHERE a.artid = :artid")
-    , @NamedQuery(name = "Articles.findByArticleno", query = "SELECT a FROM Articles a WHERE a.articleno = :articleno")
-    , @NamedQuery(name = "Articles.findByName", query = "SELECT a FROM Articles a WHERE a.name = :name")
-    , @NamedQuery(name = "Articles.findByPrice", query = "SELECT a FROM Articles a WHERE a.price = :price")})
+    @NamedQuery(name = "Article.findAll", query = "SELECT a FROM Article a")
+    , @NamedQuery(name = "Article.findByArtid", query = "SELECT a FROM Article a WHERE a.artid = :artid")
+    , @NamedQuery(name = "Article.findByArticleno", query = "SELECT a FROM Article a WHERE a.articleno = :articleno")
+    , @NamedQuery(name = "Article.findByName", query = "SELECT a FROM Article a WHERE a.name = :name")
+    , @NamedQuery(name = "Article.findByPrice", query = "SELECT a FROM Article a WHERE a.price = :price")})
 public class Article implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,38 +51,58 @@ public class Article implements Serializable {
     private String articleno;
     @Column(name = "name")
     private String name;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
     @Lob
     @Column(name = "photo")
     private byte[] photo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articlesArtid")
-    private Collection<Articledescriptions> articledescriptionsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articlesArtid")
-    private Collection<Articlesizes> articlesizesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articlesArtid")
-    private Collection<Articlecolors> articlecolorsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articlesArtid")
-    private Collection<Articlematerials> articlematerialsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articlesArtid")
-    private Collection<Orderitems> orderitemsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articlesArtid")
-    private Collection<Shoppingitems> shoppingitemsCollection;
+    
+    
+    @OneToMany(targetEntity=Articledescriptions.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
+    private List<Articledescriptions> articledescriptions;
+    
+    @OneToMany(targetEntity = Articlesizes.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
+    private List<Articlesizes> articlesizes;
+    
+    @OneToMany(targetEntity=Articlecolors.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
+    private List<Articlecolors> articlecolors;
+    
+    @OneToMany(targetEntity=Articlematerials.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
+    private List<Articlematerials> articlematerials;
+    
+    @OneToMany(targetEntity=Orderitems.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
+    private List<Orderitems> orderitems;
+    
+    @OneToMany(targetEntity=Shoppingitem.class, mappedBy="article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Shoppingitem> shoppingitems;
+    
+    @ManyToOne(targetEntity=Care.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "care_careid", referencedColumnName = "careid")
-    @ManyToOne(optional = false)
-    private Care careCareid;
-    @JoinColumn(name = "subcategories_subid", referencedColumnName = "subcatid")
-    @ManyToOne(optional = false)
-    private Subcategories subcategoriesSubid;
+    private Care care;
+    
+    @ManyToOne(targetEntity=Subcategory.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "subcategories_subcatid", referencedColumnName = "subcatid")
+    private Subcategory subcategory;
 
     public Article() {
     }
 
-    public Article(Integer artid) {
+    public Article(Integer artid, String articleno, String name, Double price, byte[] photo, List<Articledescriptions> articledescriptions, List<Articlesizes> articlesizes, List<Articlecolors> articlecolors, List<Articlematerials> articlematerials, Care care, Subcategory subcategory) {
         this.artid = artid;
+        this.articleno = articleno;
+        this.name = name;
+        this.price = price;
+        this.photo = photo;
+        this.articledescriptions = articledescriptions;
+        this.articlesizes = articlesizes;
+        this.articlecolors = articlecolors;
+        this.articlematerials = articlematerials;
+        this.care = care;
+        this.subcategory = subcategory;
     }
-
+    
+    
     public Integer getArtid() {
         return artid;
     }
@@ -106,11 +127,11 @@ public class Article implements Serializable {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -122,74 +143,68 @@ public class Article implements Serializable {
         this.photo = photo;
     }
 
-    @XmlTransient
-    public Collection<Articledescriptions> getArticledescriptionsCollection() {
-        return articledescriptionsCollection;
+    public List<Articledescriptions> getArticledescriptions() {
+        return articledescriptions;
     }
 
-    public void setArticledescriptionsCollection(Collection<Articledescriptions> articledescriptionsCollection) {
-        this.articledescriptionsCollection = articledescriptionsCollection;
+    public void setArticledescriptions(List<Articledescriptions> articledescriptions) {
+        this.articledescriptions = articledescriptions;
     }
 
-    @XmlTransient
-    public Collection<Articlesizes> getArticlesizesCollection() {
-        return articlesizesCollection;
+    public List<Articlesizes> getArticlesizes() {
+        return articlesizes;
     }
 
-    public void setArticlesizesCollection(Collection<Articlesizes> articlesizesCollection) {
-        this.articlesizesCollection = articlesizesCollection;
+    public void setArticlesizes(List<Articlesizes> articlesizes) {
+        this.articlesizes = articlesizes;
     }
 
-    @XmlTransient
-    public Collection<Articlecolors> getArticlecolorsCollection() {
-        return articlecolorsCollection;
+    public List<Articlecolors> getArticlecolors() {
+        return articlecolors;
     }
 
-    public void setArticlecolorsCollection(Collection<Articlecolors> articlecolorsCollection) {
-        this.articlecolorsCollection = articlecolorsCollection;
+    public void setArticlecolors(List<Articlecolors> articlecolors) {
+        this.articlecolors = articlecolors;
     }
 
-    @XmlTransient
-    public Collection<Articlematerials> getArticlematerialsCollection() {
-        return articlematerialsCollection;
+    public List<Articlematerials> getArticlematerials() {
+        return articlematerials;
     }
 
-    public void setArticlematerialsCollection(Collection<Articlematerials> articlematerialsCollection) {
-        this.articlematerialsCollection = articlematerialsCollection;
+    public void setArticlematerials(List<Articlematerials> articlematerials) {
+        this.articlematerials = articlematerials;
     }
 
-    @XmlTransient
-    public Collection<Orderitems> getOrderitemsCollection() {
-        return orderitemsCollection;
+    public List<Orderitems> getOrderitems() {
+        return orderitems;
     }
 
-    public void setOrderitemsCollection(Collection<Orderitems> orderitemsCollection) {
-        this.orderitemsCollection = orderitemsCollection;
+    public void setOrderitems(List<Orderitems> orderitems) {
+        this.orderitems = orderitems;
     }
 
-    @XmlTransient
-    public Collection<Shoppingitems> getShoppingitemsCollection() {
-        return shoppingitemsCollection;
+    public List<Shoppingitem> getShoppingitems() {
+        return shoppingitems;
     }
 
-    public void setShoppingitemsCollection(Collection<Shoppingitems> shoppingitemsCollection) {
-        this.shoppingitemsCollection = shoppingitemsCollection;
+    public void setShoppingitems(List<Shoppingitem> shoppingitems) {
+        this.shoppingitems = shoppingitems;
     }
 
-    public Care getCareCareid() {
-        return careCareid;
+    public Care getCare() {
+        return care;
     }
 
-    public void setCareCareid(Care careCareid) {
-        this.careCareid = careCareid;
+    public void setCare(Care care) {
+        this.care = care;
     }
 
-    public Subcategories getSubcategoriesSubid() {
-        return subcategoriesSubid;
+    public Subcategory getSubcategory() {
+        return subcategory;
     }
 
-    public void setSubcategoriesSubid(Subcategories subcategoriesSubid) {
-        this.subcategoriesSubid = subcategoriesSubid;
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
     }
     
 }
